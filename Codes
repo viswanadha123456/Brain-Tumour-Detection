@@ -1,0 +1,78 @@
+Vgg 16
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense, Flatten, Dropout
+
+# Load the VGG16 model pre-trained on ImageNet, excluding the top (fully connected) layers
+base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+
+# Freeze the base layers of VGG16 to prevent them from being updated during training
+for layer in base_model.layers:
+    layer.trainable = False
+
+# Add custom layers on top of the base model
+x = Flatten()(base_model.output)  # Flatten the output from the base model
+x = Dense(256, activation='relu')(x)  # Fully connected layer with 256 units
+x = Dropout(0.5)(x)  # Dropout layer to reduce overfitting (50% dropout rate)
+output = Dense(4, activation='softmax')(x)  # Final output layer for 4 classes (softmax for multi-class)
+
+# Create the model by connecting the input and output
+model = Model(inputs=base_model.input, outputs=output)
+
+# Compile the model with the Adam optimizer and categorical cross-entropy loss
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Display the model summary to check the architecture
+model.summary()
+Resnet code
+from tensorflow.keras.applications import ResNet101
+from tensorflow.keras.layers import Flatten, Dense, Dropout
+from tensorflow.keras.models import Model
+
+# Load the ResNet101 model pre-trained on ImageNet, excluding the top layers (classification layers)
+base_model = ResNet101(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+
+# Freeze the base layers
+for layer in base_model.layers:
+    layer.trainable = False
+
+# Add custom layers
+x = Flatten()(base_model.output)  # Flatten the output of the base model
+x = Dense(256, activation='relu')(x)  # Add a fully connected layer
+x = Dropout(0.5)(x)  # Add dropout to reduce overfitting
+output = Dense(4, activation='softmax')(x)  # Final output layer with 4 classes
+
+# Create the model
+model = Model(inputs=base_model.input, outputs=output)
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Model summary
+model.summary()
+Resnet code
+from tensorflow.keras.applications import ResNet101
+from tensorflow.keras.layers import Flatten, Dense, Dropout
+from tensorflow.keras.models import Model
+
+# Load the ResNet101 model pre-trained on ImageNet, excluding the top layers (classification layers)
+base_model = ResNet101(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+
+# Freeze the base layers
+for layer in base_model.layers:
+    layer.trainable = False
+
+# Add custom layers
+x = Flatten()(base_model.output)  # Flatten the output of the base model
+x = Dense(256, activation='relu')(x)  # Add a fully connected layer
+x = Dropout(0.5)(x)  # Add dropout to reduce overfitting
+output = Dense(4, activation='softmax')(x)  # Final output layer with 4 classes
+
+# Create the model
+model = Model(inputs=base_model.input, outputs=output)
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Model summary
+model.summary()
